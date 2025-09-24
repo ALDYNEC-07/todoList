@@ -1,111 +1,81 @@
-// Мой код с добавлением кнопки. С помощью И
-import React, { useState } from "react";
+// задание с видео 
+
+import { useState } from "react";
+import { Header } from "./components/Header";
+import { Forms } from "./components/Forms";
+import { Todo } from "./components/Todo";
 
 export const App = () => {
-  const [todoList, setTodoList] = useState([
-    { favorit: true, text: "Купить машину" },
-    { favorit: false, text: "Купить квартиру" },
-    { favorit: false, text: "Купить шапку" },
-    { favorit: false, text: "Купить телефон" },
-    { favorit: false,  text: "Купить бананы" }
-  ]);
+    const [todos, setTodos] = useState([
+      {favorite: true, text: "Купить машину"},
+      {favorite: false, text: "Купить квартиру"},
+      {favorite: false, text: "Купить шапку"},
+      {favorite: false, text: "Купить телефон"},
+      {favorite: false, text: "Купить бананы"}
+    ])
 
-  const butStar = (index) => {
-    setTodoList(prev =>
-      prev.map((item, i) => (i === index ? { ...item, favorit: !item.favorit } : item))
-    );
-  };
+    const deleteTodo = (indexOfDeletedItem) => {
+      const filterTodos = todos.filter((todo, index) => {
+        if (index === indexOfDeletedItem) {
+          return false
+        }
+        return true
+      })
 
-  const newTodList = todoList.map((todo, index) => {
-    const todoClass = todo.favorit ? "todo selected" : "todo";
-    return (
-      <div className="todos" key={index}>
-        <div className={todoClass}>
-          <div className="star_todo">
-            <div className="favorit">
-              <span>
-                <button className="star" onClick={() => butStar(index)}>☆</button>
-              </span>
-            </div>
-            <div className="todo_text">
-              {todo.text}
-            </div>
-          </div>
-          <div className="delet">
-            <span>×</span>
-          </div>
-        </div>
-      </div>
-    );
-  });
+      setTodos(filterTodos)
+    }
+
+    const makeFavorite = (indexOfMakeFavorite) => {
+      const newTodos = todos.map((item,index) => {
+        if (index === indexOfMakeFavorite) {
+          return {
+            ...item,
+            favorite: !item.favorite
+          }
+        }
+        return item
+      })
+      setTodos(newTodos)
+    }
+
+    const [text, setText] = useState("")
+
+    const addTodo = () => {
+
+    const text2 = text.trim();
+      if(text2 === "") return;
+
+    const exists = todos.some(todo => todo.text.toLowerCase() === text.toLowerCase());
+
+    if (exists) {
+      alert("Такое дело уже есть!");
+      return;
+    }
+      setTodos([
+        {
+        text: text,
+        favorite: false
+        },
+        ...todos
+         ])
+
+    setText("")
+    
+    }
 
   return (
     <div className="App">
-      <div className="header">
-        <h1>Список Дел</h1>
-        <hr />
-      </div>
-      <input type="text" placeholder="Введите ваш текст..." />
-      <button className="add">Добавить</button>
-      {newTodList}
+      <Header/>
+      <Forms 
+        text={text}
+        setText={setText}
+        addTodo={addTodo}
+      />
+      <Todo 
+        todos={todos}
+        makeFavorite={makeFavorite}
+        deleteTodo={deleteTodo}
+        />
     </div>
   );
-};
-// задание с видео 
-
-// export const App = () => {
-
-//     const todoList = [
-//       {favorit: false, text: "Купить машину"},
-//       {favorit: false, text: "Купить квартиру"},
-//       {favorit: false, text: "Купить шапку"},
-//       {favorit: false, text: "Купить телефон"},
-//       {favorit: true, text: "Купить бананы"}
-//     ]
-
-//     const newTodList = todoList.map((todo) => {
-//       let todoClass;
-//       if (todo.favorit === false) {
-//         todoClass = "todo selected"
-//       } else {
-//         todoClass = "todo"
-//       }
-//       return (
-//       <div className="todos">
-//         <div className={todoClass}> 
-//                 <div className="star_todo">
-//                   <div className="favorit">
-//                     <span>
-//                        <button className="star">
-//                         ☆
-//                        </button>
-//                     </span>
-//                   </div>
-//                   <div className="todo_text">
-//                      {todo.text}
-//                   </div>
-//                   </div>
-//                   <div className="delet">
-//                      <span>
-//                         ×
-//                      </span>
-//                 </div>
-//         </div>
-//       </div>
-//       )
-//     })
-
-//   return (
-//     <div className="App">
-//       <div className="header">
-//       <h1>Список Дел</h1>
-//       <hr/>
-//       </div>
-//       <input type="text" placeholder="Введите ваш текст..."/>
-//       <button className="add">Добавить</button>
-//       {newTodList}
-//     </div>
-//   );
-// }
-
-
+}

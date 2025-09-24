@@ -53,12 +53,15 @@ input {
   display: flex;
   gap: 30px;
 }
-.delet {
+.delet > button{
   transition: transform 0.3s ease, background-color 0.3s ease;
   font-size: 30px;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0);
+  border: 0;
 }
-.delet:hover {
-  transform: scale(2);
+.delet > button:hover {
+  transform: scale(1.5);
   color: darkred;
 }
 .selected {
@@ -76,8 +79,8 @@ input {
   background-color: white;
   border: 1px solid black;
   border-radius: 5px;
+  cursor: pointer;
   transition: transform 0.3s ease, background-color 0.3s ease;
-
 }
 .star:hover {
   color: aquamarine;
