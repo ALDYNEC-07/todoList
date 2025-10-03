@@ -1,34 +1,21 @@
-// задание с видео 
-
 import { useState } from "react";
-import { Header } from "./components/Header";
-import { Forms } from "./components/Forms";
 import { Todo } from "./components/Todo";
+import { Forms } from "./components/Forms";
+
 
 export const App = () => {
-    const [todos, setTodos] = useState([
-      {favorite: true, text: "Купить машину"},
-      {favorite: false, text: "Купить квартиру"},
-      {favorite: false, text: "Купить шапку"},
-      {favorite: false, text: "Купить телефон"},
-      {favorite: false, text: "Купить бананы"}
+
+   const [todos, setTodos] = useState([
+      {favorite: false, text: "Go to home"},
+      {favorite: true, text: "Hello LINCODE"},
+      {favorite: false, text: "Listen englich lesson"},
+      {favorite: false, text: "Write the code"},
+      {favorite: false, text: "Read the book"}
     ])
-
-    const deleteTodo = (indexOfDeletedItem) => {
-      const filterTodos = todos.filter((todo, index) => {
-        if (index === indexOfDeletedItem) {
-          return false
-        }
-        return true
-      })
-
-      setTodos(filterTodos)
-    }
-
-    const makeFavorite = (indexOfMakeFavorite) => {
+    const makeFavorite = (indx) => {
       const newTodos = todos.map((item,index) => {
-        if (index === indexOfMakeFavorite) {
-          return {
+        if(index === indx) {
+         return {
             ...item,
             favorite: !item.favorite
           }
@@ -37,45 +24,56 @@ export const App = () => {
       })
       setTodos(newTodos)
     }
+  const [text, setText] = useState("")
+  const [checked, setChecked] = useState(false)
+  const addTodo = () => {
+    const textTrim = text.trim()
+    if(textTrim === "") return;
 
-    const [text, setText] = useState("")
-
-    const addTodo = () => {
-
-    const text2 = text.trim();
-      if(text2 === "") return;
-
-    const exists = todos.some(todo => todo.text.toLowerCase() === text.toLowerCase());
-
-    if (exists) {
-      alert("Такое дело уже есть!");
-      return;
-    }
+    if(checked === true) {
       setTodos([
-        {
-        text: text,
-        favorite: false
-        },
+      {
+        text: " ✔️ " + text
+      },
         ...todos
-         ])
-
+    ])
     setText("")
-    
+    } else {
+       setTodos([
+      {
+        text: text
+      },
+        ...todos
+    ])
+    setText("")
     }
-
+    const exists = todos.some(todo => todo.text.toLowerCase() === text.toLowerCase());
+  if(exists) {
+    alert("Такое дело уже есть!")
+    return 
+  } 
+  }
+  const deleted = (indx) => {
+    const filterTodos = todos.filter((todo,index) => indx !== index)
+    setTodos(filterTodos)
+  }
   return (
     <div className="App">
-      <Header/>
-      <Forms 
-        text={text}
-        setText={setText}
-        addTodo={addTodo}
+      <header className="header">
+          <h1 className="logo">Todo list</h1>
+          <Forms checked={checked}
+                 setChecked={setChecked}
+                 text={text}
+                 setText={setText}
+                 addTodo={addTodo}
+          />
+      </header>
+      <Todo todos={todos} 
+            makeFavorite={makeFavorite}
+            deleted={deleted}
       />
-      <Todo 
-        todos={todos}
-        makeFavorite={makeFavorite}
-        deleteTodo={deleteTodo}
-        />
     </div>
   );
 }
+
+

@@ -1,29 +1,26 @@
+
 import React from "react";
 
-export const Todo = ({todos, makeFavorite, deleteTodo}) => {
+export const Todo = ({todos, makeFavorite, deleted}) => {
     return (
-        todos.map((todo, index) => {
-      return (
-      <div className="todos">
-        <div className={`todo ${todo.favorite ? "selected" : ""}`}> 
-                <div className="star_todo">
-                  <div className="favorite">
-                    <span>
-                       <button className="star" onClick={() => makeFavorite(index)}>
-                        ☆
-                       </button>
-                    </span>
-                  </div>
-                  <div className="todo_text">
-                     {todo.text}
-                  </div>
-                  </div>
-                  <div className="delet">
-                     <button onClick={() => deleteTodo(index)}> × </button>
-                </div>
-        </div>
-      </div>
-      )
-    })
+    <main className="main">
+        {
+          todos.map((todo, index) => (
+            <div className={todo.favorite ? "selected" : "todo"}>
+             <div className="star-todo">
+              <div className="star">
+                <input className="button" type="button" value="☆" onClick={() => makeFavorite(index)} />
+              </div>
+              <div className="todo">
+                  {todo.text}
+              </div>
+              <div className="delet">
+                <input className="dlt" type="button" value="❌" onClick={() => deleted(index)} />
+              </div>
+            </div>
+            </div>
+          ))
+        }
+    </main>
     )
 }
